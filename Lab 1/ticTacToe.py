@@ -15,7 +15,7 @@ def printBoard(board):
     print('-----------')
     print(' ' + board[4] + ' | ' + board[5] + ' | ' + board[6])
     print('-----------')
-    print(' ' + board[7] + ' | ' + board[8] + ' | ' + board[9])
+    print(' ' + board[7] + ' | ' + board[8] + ' | ' + board[9], end='\n\n')
 
 
 def spaceIsFree(pos):
@@ -31,22 +31,21 @@ def insertLetter(letter, pos):
 
 
 def selectRandom(li):
-    ln = len(li)
-    r = random.randrange(0, ln)
+    r = random.randrange(0, len(li))
     return li[r]
 
 
 def isBoardFull(board):
     if board.count(' ') > 1:
         return False
-    else:
-        return True
+
+    return True
 
 
 def playerMove():
     run = True
     while run:
-        move = input(f'\nPlease select a position to place an {user_char}: ')
+        move = input(f'\nSelect a position to place an {user_char}: ')
         try:
             move = int(move)
             if move > 0 and move < 10:
@@ -68,11 +67,14 @@ def compMove():
 
     for let in [comp_char, user_char]:
         for i in possibleMoves:
-            boardCopy = board[:]
+            boardCopy = board.copy()
             boardCopy[i] = let
             if isWinner(boardCopy, let):
                 move = i
                 return move
+    if 5 in possibleMoves:
+        move = 5
+        return move
 
     cornersOpen = []
     for i in possibleMoves:
@@ -81,10 +83,6 @@ def compMove():
 
     if len(cornersOpen) > 0:
         move = selectRandom(cornersOpen)
-        return move
-
-    if 5 in possibleMoves:
-        move = 5
         return move
 
     edgesOpen = []
@@ -116,36 +114,35 @@ def playerChoose():
 def main():
     global board, user_char, comp_char
     playerChoose()
-    printBoard(board)
-    while not(isBoardFull(board)):
-        if not(isWinner(board, comp_char)):
-            playerMove()
-            printBoard(board)
-        else:
-            print('Computer won this time.. Hehe!')
-            break
-        if not(isWinner(board, user_char)):
-            move = compMove()
-            if move == 0:
-                print('Tie Game!')
-            else:
-                insertLetter(comp_char, move)
-                print(f'Computer placed an {comp_char} in position', move, ':')
-                printBoard(board)
-        else:
-            print('You won this time! Good Job!')
-            break
-    if isBoardFull(board):
-        print('Tie Game!')
 
-    while True:
-        answer = input('Do you want to play again? (Y/N)')
-        if answer.lower() == 'y' or answer.lower == 'yes':
+    play = True
+    while play:
+        while not(isBoardFull(board)):
+            if not(isWinner(board, comp_char)):
+                printBoard(board)
+                playerMove()
+            else:
+                print('Computer won this time.. Hehe!')
+                break
+            if not(isWinner(board, user_char)):
+                move = compMove()
+                if move == 0:
+                    print('Tie Game!')
+                else:
+                    insertLetter(comp_char, move)
+                    print(
+                        f'Computer placed an {comp_char} in position', move, ':')
+                    printBoard(board)
+            else:
+                print('You won this time! Good Job!')
+                break
+
+        if input('Do you want to play again? (Y/N) ').lower() in ['y', 'yes']:
             board = [' ' for _ in range(10)]
             print('-----------------------------------')
-            main()
+
         else:
-            break
+            play = False
 
 
 if __name__ == "__main__":
