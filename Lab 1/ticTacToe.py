@@ -1,4 +1,6 @@
 import random
+import colorama
+from colorama import Fore, Style
 
 board = [' ' for _ in range(10)]
 user_char = ''
@@ -8,14 +10,15 @@ comp_char = ''
 def printBoard(board):
     global user_char, comp_char
     print("\033c", end="")
-    print('Tic Tac Toe! \n')
-    print(f'Your player : {user_char}')
+    print(Fore.GREEN + 'Tic Tac Toe! \n')
+    print(Fore.WHITE + f'Your player : {user_char}')
     print(f'Computer player : {comp_char}', end="\n\n")
-    print(' ' + board[1] + ' | ' + board[2] + ' | ' + board[3])
+    print(Fore.BLUE + ' ' + board[1] + ' | ' + board[2] + ' | ' + board[3])
     print('-----------')
     print(' ' + board[4] + ' | ' + board[5] + ' | ' + board[6])
     print('-----------')
-    print(' ' + board[7] + ' | ' + board[8] + ' | ' + board[9], end='\n\n')
+    print(' ' + board[7] + ' | ' + board[8] + ' | ' +
+          board[9] + Style.RESET_ALL, end='\n\n')
 
 
 def spaceIsFree(pos):
@@ -98,7 +101,7 @@ def compMove():
 
 def playerChoose():
     global user_char, comp_char
-    print('Tic Tac Toe! \n')
+    print('\nTic Tac Toe! \n')
     user_input = input('Enter your player (O / X): ')
     while(user_input not in ['o', 'O', '0', 'x', 'X']):
         print("Sorry. That's invalid")
