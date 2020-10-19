@@ -2,8 +2,6 @@ import time
 import colorama
 from colorama import Fore, Style
 
-# 8 Puzzle's problem using A* search with manhattan distance
-
 
 class Node:
     def __init__(self, data, level, fval):
